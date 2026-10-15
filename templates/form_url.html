@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Load a Google Form</title>
+<link rel="stylesheet" href="{{ url_for('static', path='css/form_url.css') }}" />
+</head>
+<body>
+<div class="wrap">
+
+  <div class="card">
+    <h1>Load a Google Form</h1>
+    <p class="sub">Paste the form's URL (edit link or public link) to pull its questions.</p>
+
+    <form id="formUrlForm">
+      <label for="form_url">Google Form URL</label>
+      <input type="text" id="form_url" name="form_url"
+             placeholder="https://docs.google.com/forms/d/.../edit" required />
+      <button type="submit" id="submitBtn">Get questions</button>
+    </form>
+
+    <div class="loading" id="loading">Fetching form…</div>
+    <div class="error" id="errorBox"></div>
+  </div>
+
+  <div class="card" id="resultsWrap">
+    <div class="form-meta">
+      <h2 id="formTitle"></h2>
+      <p id="formDescription"></p>
+      <p id="formIdLine"></p>
+    </div>
+    <div class="q-list" id="qList"></div>
+  </div>
+
+  <div class="card" id="syntheticConfigWrap">
+    <h2>Generate synthetic responses</h2>
+    <p class="sub">Tell the AI how many responses you want and who the target audience is.</p>
+
+    <p class="selected-form" id="selectedFormHint">Load a form first to enable generation.</p>
+
+    <form id="syntheticConfigForm">
+      <label for="num_responses">Number of synthetic responses</label>
+      <input type="number" id="num_responses" name="num_responses" min="1" max="1000" value="10" required />
+
+      <label for="target_audience">Target audience</label>
+      <textarea id="target_audience" name="target_audience" rows="3" placeholder="e.g. University students in Mexico City aged 18-24" required></textarea>
+
+      <button type="submit" id="generateBtn">Generate with AI</button>
+    </form>
+
+    <div class="status" id="generationStatus"></div>
+  </div>
+
+</div>
+
+<script src="{{ url_for('static', path='js/form_url.js') }}"></script>
+</body>
+</html>
