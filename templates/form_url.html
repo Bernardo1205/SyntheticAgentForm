@@ -3,54 +3,103 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Load a Google Form</title>
+<title>Synthetic Form Responses</title>
 <link rel="stylesheet" href="{{ url_for('static', path='css/form_url.css') }}" />
 </head>
 <body>
-<div class="wrap">
+<div class="layout-container">
 
-  <div class="card">
-    <h1>Load a Google Form</h1>
-    <p class="sub">Paste the form's URL (edit link or public link) to pull its questions.</p>
+  <main class="main-content">
 
-    <form id="formUrlForm">
-      <label for="form_url">Google Form URL</label>
-      <input type="text" id="form_url" name="form_url"
-             placeholder="https://docs.google.com/forms/d/.../edit" required />
-      <button type="submit" id="submitBtn">Get questions</button>
-    </form>
+    <div class="card">
+      <h1>Load a Google Form</h1>
+      <p class="sub">Paste the form's URL (edit link or public link) to pull its questions.</p>
 
-    <div class="loading" id="loading">Fetching form…</div>
-    <div class="error" id="errorBox"></div>
-  </div>
+      <form id="formUrlForm">
+        <label for="form_url">Google Form URL</label>
+        <input type="text" id="form_url" name="form_url"
+               placeholder="https://docs.google.com/forms/d/.../edit" required />
+        <button type="submit" id="submitBtn">Get questions</button>
+      </form>
 
-  <div class="card" id="resultsWrap">
-    <div class="form-meta">
-      <h2 id="formTitle"></h2>
-      <p id="formDescription"></p>
-      <p id="formIdLine"></p>
+      <div class="loading" id="loading">Fetching form…</div>
+      <div class="error" id="errorBox"></div>
     </div>
-    <div class="q-list" id="qList"></div>
-  </div>
 
-  <div class="card" id="syntheticConfigWrap">
-    <h2>Generate synthetic responses</h2>
-    <p class="sub">Tell the AI how many responses you want and who the target audience is.</p>
+    <div class="card" id="resultsWrap">
+      <div class="form-meta">
+        <h2 id="formTitle"></h2>
+        <p id="formDescription"></p>
+        <p id="formIdLine"></p>
+      </div>
+      <div class="q-list" id="qList"></div>
+    </div>
 
-    <p class="selected-form" id="selectedFormHint">Load a form first to enable generation.</p>
+    <div class="card" id="syntheticConfigWrap">
+      <h2>Generate synthetic responses</h2>
+      <p class="sub">Tell the AI how many responses you want and who the target audience is.</p>
 
-    <form id="syntheticConfigForm">
-      <label for="num_responses">Number of synthetic responses</label>
-      <input type="number" id="num_responses" name="num_responses" min="1" max="1000" value="10" required />
+      <p class="selected-form" id="selectedFormHint">Load a form first to enable generation.</p>
 
-      <label for="target_audience">Target audience</label>
-      <textarea id="target_audience" name="target_audience" rows="3" placeholder="e.g. University students in Mexico City aged 18-24" required></textarea>
+      <form id="syntheticConfigForm">
+        <label for="num_responses">Number of synthetic responses</label>
+        <input type="number" id="num_responses" name="num_responses" min="1" max="1000" value="10" required />
 
-      <button type="submit" id="generateBtn">Generate with AI</button>
-    </form>
+        <label for="target_audience">Target audience</label>
+        <textarea id="target_audience" name="target_audience" rows="3" placeholder="e.g. University students in Mexico City aged 18-24" required></textarea>
 
-    <div class="status" id="generationStatus"></div>
-  </div>
+        <button type="submit" id="generateBtn">Generate with AI</button>
+      </form>
+
+      <div class="status-banner" id="generationStatus" role="status" aria-live="polite">
+        <div class="status-row">
+          <span class="spinner" id="statusSpinner"></span>
+          <span class="status-text" id="statusText"></span>
+        </div>
+        <div class="progress-track" id="statusProgress"><div class="progress-fill" id="statusProgressFill"></div></div>
+        <ul class="status-details" id="statusDetails"></ul>
+      </div>
+    </div>
+
+  </main>
+
+  <aside class="side-panel">
+    <div class="card" id="sidePanel">
+      <div class="panel-header">
+        <h2>Audience Analytics</h2>
+        <p class="panel-meta" id="panelMeta"></p>
+      </div>
+
+      <div class="empty-state" id="analyticsEmpty">
+        <div class="empty-icon" aria-hidden="true">◔</div>
+        <p>Generate responses to view cohort metrics.</p>
+      </div>
+
+      <div class="analytics" id="analyticsContent" hidden>
+        <section class="metric-card">
+          <div class="metric-label">Audience Diversity Score</div>
+          <div class="metric-value" id="diversityScore">—</div>
+          <div class="bar-track"><div class="bar-fill accent" id="diversityBar"></div></div>
+          <div class="chip-row" id="diversityBreakdown"></div>
+        </section>
+
+        <section class="panel-section">
+          <h3>Archetype clusters</h3>
+          <ul class="archetype-list" id="archetypeList"></ul>
+        </section>
+
+        <section class="panel-section">
+          <h3>Demographic distribution</h3>
+          <div id="demographics"></div>
+        </section>
+
+        <section class="panel-section">
+          <h3>Persona spotlight</h3>
+          <div class="persona-grid" id="personaCards"></div>
+        </section>
+      </div>
+    </div>
+  </aside>
 
 </div>
 
