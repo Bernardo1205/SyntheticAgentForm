@@ -68,9 +68,8 @@ async def auth_google_callback(request: Request):
     refresh_token = token.get("refresh_token") or existing_tokens.get("refresh_token")
     if not token.get("refresh_token"):
         if not refresh_token:
-            return RedirectResponse(
-                url=f"/?{urlencode({'auth_error': 'Google did not return a refresh token. Revoke this app\'s access in your Google Account, then sign in again.'})}"
-            )
+            message = "Google did not return a refresh token. Revoke this app's access in your Google Account, then sign in again."
+            return RedirectResponse(url=f"/?{urlencode({'auth_error': message})}")
 
     request.session["tokens"] = {
         "access_token": token["access_token"],
